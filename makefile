@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -ansi -pedantic
+CFLAGS = -Wall -ansi -pedantic -fno-stack-protector
 OBJS = main.o game.o display.o terminal.o random.o newSleep.o
 TARGET = treasure
 
