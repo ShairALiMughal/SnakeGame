@@ -11,10 +11,11 @@ void clear_screen(void)
     system("tput cup 0 0");
 }
 
+
 void display_map(GameState* game)
 {
     int i, j;
-    
+    clear_screen();
     /* Print top border */
     for (j = 0; j < game->cols + 2; j++) {
         putchar('*');
