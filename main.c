@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     GameManager* manager;
     char move;
     int game_status;
-
+    int check = 1;
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <map_file>\n", argv[0]);
         return 1;
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
     initRandom();
 
-    while (1) {
+    while (check) {
         display_map(manager->current);
 
         disableBuffer();
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
         enableBuffer();
 
         if (move == 'q') {
-            break; /* Quit the game */
+            check=0;
         }
         else if (move == 'u') {
             undo_move(manager);
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
             } else {
                 printf("You lose!\n");
             }
-            break;
+            check=0;
         }
     }
 
