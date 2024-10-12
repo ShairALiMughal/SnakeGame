@@ -214,9 +214,7 @@ int is_game_over(GameManager* manager)
 void free_game(GameManager* manager)
 {
     GameState* game = manager->current;
-    UndoNode* temp;
     int i;
-
     for (i = 0; i < game->rows; i++) {
         free(game->map[i]);
     }
@@ -224,7 +222,7 @@ void free_game(GameManager* manager)
     free(game);
 
     while (manager->head != NULL) {
-        temp = manager->head;
+        UndoNode* temp = manager->head;
         manager->head = manager->head->prev;
         for (i = 0; i < temp->state->rows; i++) {
             free(temp->state->map[i]);
