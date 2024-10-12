@@ -10,7 +10,7 @@
 #define PLAYER 'P'
 #define SNAKE '~'
 #define TREASURE '$'
-#define VISIBLE_EMPTY ' '
+#define VISIBLE_EMPTY '.'
 
 /* Game state structure */
 typedef struct {
