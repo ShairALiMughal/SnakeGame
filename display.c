@@ -14,25 +14,40 @@ void clear_screen(void)
 void display_map(GameState* game)
 {
     int i, j;
+    
+    /* Print top border */
+    for (j = 0; j < game->cols + 2; j++) {
+        putchar('*');
+    }
+    putchar('\n');
 
-    clear_screen();
-
-    for (i = 0; i < game->rows; i++)
-    {
-        for (j = 0; j < game->cols; j++)
-        {
-            if (IS_VISIBLE(game, i, j))
-            {
-                if (game->map[i][j] == EMPTY)
+    for (i = 0; i < game->rows; i++) {
+        putchar('*'); /* Left border */
+        for (j = 0; j < game->cols; j++) {
+            if (IS_VISIBLE(game, i, j)) {
+                if (game->map[i][j] == EMPTY) {
                     putchar(VISIBLE_EMPTY);
-                else
+                } else {
                     putchar(game->map[i][j]);
-            }
-            else
-            {
+                }
+            } else {
                 putchar(' ');
             }
         }
+        putchar('*'); /* Right border */
         putchar('\n');
     }
+
+    /* Print bottom border */
+    for (j = 0; j < game->cols + 2; j++) {
+        putchar('*');
+    }
+    putchar('\n');
+
+    /* Print instructions */
+    printf("Press w to move up\n");
+    printf("Press s to move down\n");
+    printf("Press a to move left\n");
+    printf("Press d to move right\n");
+    printf("Press u to undo\n");
 }
