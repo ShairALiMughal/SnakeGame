@@ -93,6 +93,10 @@ GameManager* init_game(const char* filename)
     return manager;
 }
 
+int is_adjacent(int row1, int col1, int row2, int col2) {
+    return (abs(row1 - row2) + abs(col1 - col2)) == 1;
+}
+
 void update_game(GameManager* manager, char move)
 {
     GameState* game = manager->current;
@@ -112,7 +116,6 @@ void update_game(GameManager* manager, char move)
     }
     new_node->prev = manager->head;
     manager->head = new_node;
-
 
     /* Update player position based on move */
     switch(move) {
@@ -140,32 +143,41 @@ void update_game(GameManager* manager, char move)
 
         game->map[new_row][new_col] = PLAYER;
 
-        /* Move snake */
-        direction = randomUCP(0, 7);
-        snake_new_row = game->snake_row;
-        snake_new_col = game->snake_col;
+        /* Check if snake is adjacent to player */
+        if (is_adjacent(game->player_row, game->player_col, game->snake_row, game->snake_col)) {
+            /* Snake eats player */
+            game->map[game->player_row][game->player_col] = SNAKE;
+            game->snake_row = game->player_row;
+            game->snake_col = game->player_col;
+        } else {
+            /* Move snake */
+            direction = randomUCP(0, 7);
+            snake_new_row = game->snake_row;
+            snake_new_col = game->snake_col;
 
-        switch(direction) {
-            case 0: snake_new_row--; break;
-            case 1: snake_new_row--; snake_new_col++; break;
-            case 2: snake_new_col++; break;
-            case 3: snake_new_row++; snake_new_col++; break;
-            case 4: snake_new_row++; break;
-            case 5: snake_new_row++; snake_new_col--; break;
-            case 6: snake_new_col--; break;
-            case 7: snake_new_row--; snake_new_col--; break;
-        }
+            switch(direction) {
+                case 0: snake_new_row--; break;
+                case 1: snake_new_row--; snake_new_col++; break;
+                case 2: snake_new_col++; break;
+                case 3: snake_new_row++; snake_new_col++; break;
+                case 4: snake_new_row++; break;
+                case 5: snake_new_row++; snake_new_col--; break;
+                case 6: snake_new_col--; break;
+                case 7: snake_new_row--; snake_new_col--; break;
+            }
 
-        /* Check if snake move is valid */
-        if (snake_new_row >= 0 && snake_new_row < game->rows && snake_new_col >= 0 && snake_new_col < game->cols 
-            && game->map[snake_new_row][snake_new_col] != WALL
-            && game->map[snake_new_row][snake_new_col] != TREASURE
-            && game->map[snake_new_row][snake_new_col] != LANTERN) {
-            
-            game->map[game->snake_row][game->snake_col] = EMPTY;
-            game->snake_row = snake_new_row;
-            game->snake_col = snake_new_col;
-            game->map[snake_new_row][snake_new_col] = SNAKE;
+            /* Check if snake move is valid */
+            if (snake_new_row >= 0 && snake_new_row < game->rows && 
+                snake_new_col >= 0 && snake_new_col < game->cols && 
+                game->map[snake_new_row][snake_new_col] != WALL &&
+                game->map[snake_new_row][snake_new_col] != TREASURE &&
+                game->map[snake_new_row][snake_new_col] != LANTERN) {
+                
+                game->map[game->snake_row][game->snake_col] = EMPTY;
+                game->snake_row = snake_new_row;
+                game->snake_col = snake_new_col;
+                game->map[snake_new_row][snake_new_col] = SNAKE;
+            }
         }
     }
 }
