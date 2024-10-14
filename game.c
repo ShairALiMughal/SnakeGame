@@ -103,7 +103,7 @@ void update_game(GameManager* manager, char move)
     int new_row = game->player_row;
     int new_col = game->player_col;
     UndoNode* new_node;
-    int i, direction, snake_new_row, snake_new_col;
+    int i;
 
     /* Save current state for undo */
     new_node = (UndoNode*)malloc(sizeof(UndoNode));
@@ -143,17 +143,18 @@ void update_game(GameManager* manager, char move)
 
         game->map[new_row][new_col] = PLAYER;
 
-        /* Check if snake is adjacent to player */
+        /* Check if player is exactly one grid away from snake */
         if (is_adjacent(game->player_row, game->player_col, game->snake_row, game->snake_col)) {
-            /* Snake eats player */
-            game->map[game->player_row][game->player_col] = SNAKE;
+            /* Snake moves to eat player */
+            game->map[game->snake_row][game->snake_col] = EMPTY;
             game->snake_row = game->player_row;
             game->snake_col = game->player_col;
+            game->map[game->snake_row][game->snake_col] = SNAKE;
         } else {
-            /* Move snake */
-            direction = randomUCP(0, 7);
-            snake_new_row = game->snake_row;
-            snake_new_col = game->snake_col;
+            /* Move snake randomly */
+            int direction = randomUCP(0, 7);
+            int snake_new_row = game->snake_row;
+            int snake_new_col = game->snake_col;
 
             switch(direction) {
                 case 0: snake_new_row--; break;
