@@ -6,6 +6,10 @@
 #include "random.h"
 #include "display.h"
 
+int is_adjacent(int row1, int col1, int row2, int col2) {
+    return (abs(row1 - row2) + abs(col1 - col2)) == 1;
+}
+
 #ifdef DARK
 #define IS_VISIBLE(game, row, col) \
     (abs((row) - game->player_row) + abs((col) - game->player_col) <= game->vision_range)
@@ -91,10 +95,6 @@ GameManager* init_game(const char* filename)
     manager->head = NULL;
 
     return manager;
-}
-
-int is_adjacent(int row1, int col1, int row2, int col2) {
-    return (abs(row1 - row2) + abs(col1 - col2)) == 1;
 }
 
 void update_game(GameManager* manager, char move)
